@@ -1,0 +1,21 @@
+{{ if .Values.db.enabled }}
+{{ if .Values.operator.data.mgmt.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-data-mgmt-config"
+  labels:
+    app: {{ .Release.Name }}
+{{ include "quarkus.labels.common" $ | indent 4 }}
+data:
+  datasource-config: |-
+    {
+      "fileNamePrefix": "{{ .Values.operator.data.mgmt.prefix | default .Release.Name }}",
+      "dbType": "{{ .Values.operator.data.mgmt.dbType }}",
+      "url": {{ include "quarkus.db.url" $ }},
+      "user": "{{ include "quarkus.db.username" $ }}",
+      "password": "{{ include "quarkus.db.password" $ }}",
+      "dbSchemeName": "{{ .Values.operator.data.mgmt.schema }}"
+    }
+{{ end }}
+{{ end }}

@@ -1,0 +1,36 @@
+{{- if .Values.routing.enabled }}
+{{- if eq (include "quarkus.routing.type" $) "traefik" }}
+kind: IngressRoute
+apiVersion: traefik.containo.us/v1alpha1
+metadata:
+  name: {{ .Release.Name }}-{{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+{{ include "quarkus.labels.common" $ | indent 4 }}
+spec:
+  entryPoints:
+    {{- range $ep := .Values.routing.entryPoints }}
+    - {{ $ep }}
+    {{ end }}
+    {{- range $ep := .Values.global.routing.entryPoints }}
+    - {{ $ep }}
+    {{ end }}
+  routes:
+    - kind: Rule
+      {{ if .Values.global.hostName }}
+      match: Host(`{{ .Values.global.hostName }}`){{ include "quarkus.traefik.path" $ }}
+      {{ else if .Values.routing.hostName }}
+      match: Host(`{{ .Values.routing.hostName }}`){{ include "quarkus.traefik.path" $ }}
+      {{ else  }}
+      match: Host(`{{ .Release.Name }}-{{ .Release.Namespace }}.{{ .Values.global.default_url | default .Values.routing.default_url }}`){{ include "quarkus.traefik.path" $ }}
+      {{ end  }}
+      {{ if .Values.routing.stripprefix }}
+      middlewares:
+        - name: {{ .Release.Name }}-{{ .Release.Namespace }}-middleware
+      {{ end }}
+      services:
+        - kind: Service
+          name: {{ .Release.Name }}
+          port: {{ .Values.service.port }}
+{{ end }}
+{{ end }}

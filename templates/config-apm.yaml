@@ -1,0 +1,17 @@
+{{ if .Values.operator.apm.enabled }}
+{{ if .Values.operator.apm.permissions }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ .Release.Name }}-apm-config"
+  annotations:
+    appId: {{ .Release.Name }}
+    filename: "permissions.csv"
+  labels:
+    app: {{ .Release.Name }}
+{{ include "quarkus.labels.common" $ | indent 4 }}
+data:
+  permissions.csv: |-
+{{ $.Files.Get .Values.operator.apm.permissions | indent 4 }}
+{{ end }}
+{{ end }}

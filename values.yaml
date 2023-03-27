@@ -1,0 +1,145 @@
+global:
+  #Inject config maps
+  inject_maps: []
+
+  routing:
+    type:
+
+  operator:
+    keycloak:
+      realm:
+  db:
+    port:
+    host:
+    admin: {}
+
+# Application image
+image:
+  # Docker registry
+  registry: "harbor.1000kit.org"
+  # Docker repository (application name)
+  repository: "change-me"
+  # Docker image tag (application version)
+  tag: "master"
+
+# Image pull secrets
+imagePullSecrets:
+
+# health 
+livenessProbe:
+  url: /q/health/live
+  
+readinessProbe:
+  url: /q/health/ready
+
+# Template env variable for Quarkus application
+template:
+  db_property_url: "QUARKUS_DATASOURCE_JDBC_URL"
+  db_property_username: "QUARKUS_DATASOURCE_USERNAME"
+  db_property_password: "QUARKUS_DATASOURCE_PASSWORD"
+
+# pod
+pod:
+  port: 8080
+
+# service
+service:
+  port: 8080
+
+# Route
+routing:
+  # Enable or disable route
+  enabled: false
+  # Default URL
+  default_url: "change.com"
+
+  # route | traefik | ingress
+  type: none
+
+  # path
+  path:
+
+  # stripprefix for treafik
+  stripprefix: false
+
+  # ingress
+  ingress:
+    annotations:
+      ingress.kubernetes.io/ssl-redirect: "false"
+  # custom service name and port for the routing
+  service:
+    name:
+    port:
+
+# Replicas
+replicas: 1
+
+# Service account suffix
+# serviceAccountName =  Release.Name-serviceAccountSuffix
+serviceAccountSuffix:
+
+# Inject config maps
+inject_maps: []
+
+# Database configuration
+db:
+  # Enable or disable database connection
+  enabled: false
+  
+  # Database name
+  database:
+  
+  # Database username
+  username:
+  
+  # Database password
+  password:
+
+  # Database port
+  port: 5432
+  
+  # JDBC url. Generated
+  # url: "jdbc:postgresql://localhost:5432/changeit"
+
+  # Database host, Generated
+  # host: app-postgresql
+
+  # Database image
+  image:
+    registry: docker.io
+    repository: bitnami/postgresql
+    tag: 12.2.0
+
+# Kubernetes operator configuration
+operator:
+  # Data mgmt operator
+  data:
+    mgmt:
+      # enabled or disable config for operator
+      enabled: true
+      # database type POSTGRES
+      dbType: POSTGRES
+      # file prefix for the scenario
+      prefix:
+      # schema
+      schema: public
+      
+  # APM operator
+  apm:
+    # enabled or disable config for operator
+    enabled: false
+    # path to the permissions file
+    permissions:
+
+  # Keycloak operator
+  keycloak:
+    # enabled or disable config for operator
+    enabled: false
+    # keycloak realm
+    realm: master
+    # path to the client JSON file
+    client:
+    # path to the roles JSON file
+    roles:
+    # path to the realms JSON file
+    realms:

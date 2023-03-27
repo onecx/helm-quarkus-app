@@ -1,0 +1,16 @@
+{{- if .Values.db.enabled }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Release.Name }}-db-config
+  annotations:
+    org.tkit.db.operator/database: {{ include "quarkus.db.host" $ }}
+  labels:
+    app: {{ .Release.Name }}
+{{ include "quarkus.labels.common" $ | indent 4 }}    
+type: Opaque
+stringData:
+  user: {{ include "quarkus.db.username" $ }}
+  password: {{ include "quarkus.db.password" $ }}
+  database: {{ include "quarkus.db.database" $ }}
+{{- end }}

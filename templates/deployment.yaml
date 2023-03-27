@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+{{ include "quarkus.labels.common" $ | indent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+{{ include "quarkus.labels.common" $ | indent 8 }}
+      annotations:
+{{- range $map_name := .Values.inject_maps }}
+        checksum/{{ $map_name | replace "-" "_" }}: {{ index $.Values.global ($map_name | replace "-" "_") }}
+{{- end }}
+{{- range $map_name := .Values.global.inject_maps }}
+        checksum/{{ $map_name | replace "-" "_" }}: {{ index $.Values.global ($map_name | replace "-" "_") }}
+{{- end }}
+{{- if .Values.operator.keycloak.enabled }}
+        checksum/{{ $.Release.Name }}-config-keycloak: {{ include (print $.Template.BasePath "/config-keycloak.yaml") . | sha256sum }}
+{{- end }}
+{{- if and (.Values.operator.apm.enabled) (.Values.operator.apm.permissions) }}
+        checksum/{{ $.Release.Name }}-config-apm: {{ include (print $.Template.BasePath "/config-apm.yaml") . | sha256sum }}
+{{- end }}
+{{- if and (.Values.db.enabled) (.Values.operator.data.mgmt.enabled) }}
+        checksum/{{ $.Release.Name }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
+{{- end }}
+{{- if .Values.db.enabled }} 
+        checksum/{{ $.Release.Name }}-config-db: {{ include (print $.Template.BasePath "/config-db.yaml") . | sha256sum }}
+{{- end }}
+{{- if .Values.env_secrets }}
+        checksum/{{ $.Release.Name }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
+{{- end }}
+    spec:
+      {{- if .Values.serviceAccountSuffix }} 
+      serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccountSuffix }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }}
+      {{- end }}
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: Always
+        ports:
+        - containerPort: {{ .Values.pod.port }}
+        readinessProbe:
+          httpGet:
+            path: {{ .Values.livenessProbe.url }}
+            port: {{ .Values.pod.port }}
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 5
+        livenessProbe:
+          httpGet:
+            path: {{ .Values.readinessProbe.url }}
+            port: {{ .Values.pod.port }}
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 3
+          successThreshold: 1
+          failureThreshold: 5
+        env:
+          {{- if .Values.db.enabled }}        
+          - name: {{ .Values.template.db_property_url }}
+            value: {{ include "quarkus.db.url" $  }}
+          - name: {{ .Values.template.db_property_username }}
+            value: {{ include "quarkus.db.username" $ }}
+          - name: {{ .Values.template.db_property_password }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-db-config
+                key: password
+          {{- end }}
+          {{- $envVals := .Values.global.env -}}
+          {{- if (.Values.env) }}
+          {{- $envVals = merge .Values.env $envVals -}}
+          {{- end }}
+          {{- if $envVals }}
+          {{- range $key,$val := $envVals }}
+          - name: {{ $key }}
+            value: {{ tpl ($val|toString) $ | quote }}
+          {{- end }}
+          {{- end }}
+
+          {{- if .Values.env_secrets }}
+          {{- range $secret_key,$secret_value := .Values.env_secrets }}
+          - name: {{ $secret_key }}
+            valueFrom:
+              secretKeyRef:
+                key:  {{ $secret_key }}
+                name: {{ $.Release.Name }}-env
+          {{- end }}        
+          {{- end }}
+        
+        {{- if or (.Values.global.inject_maps) (.Values.inject_maps) }}
+        envFrom:
+          {{- $im := .Values.global.inject_maps -}}
+          {{- if (.Values.inject_maps) }}
+          {{- $im = concat .Values.inject_maps .Values.global.inject_maps | uniq -}}
+          {{- end }}
+          {{- if $im }}
+          {{- range $map_name := $im }}
+          - configMapRef:
+              name: {{ $map_name }}
+          {{- end }}
+          {{- end }}
+        {{- end }}
+
+      initContainers:
+        {{- if .Values.db.enabled }}
+        - name: "check-db"
+          image: "{{ .Values.db.image.registry }}/{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
+          command:
+            - /bin/bash
+            - -c
+            - until pg_isready; do echo waiting for database; sleep 2; done;
+          env:
+            - name: PGHOST
+              value: {{ include "quarkus.db.host" $  }}
+            - name: PGPORT
+              value: {{ include "quarkus.db.port" $ | quote }}
+            - name: PGDATABASE
+              value: {{ include "quarkus.db.database" $ }}
+            - name: PGUSER
+              value: {{ include "quarkus.db.username" $ }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-db-config
+                  key: password
+            - name: DISABLE_WELCOME_MESSAGE
+              value: "true"
+        {{- end }}

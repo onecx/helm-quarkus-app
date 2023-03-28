@@ -12,4 +12,6 @@ jobs:
     secrets: inherit
     with:
       artifact: ''    
-      helmDir: '.'
+      helmdir: 'target/helm'
+      samoHelmSourceDir: '.'
+      samoHelmSourceCopy: true

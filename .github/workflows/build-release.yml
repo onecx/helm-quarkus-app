@@ -9,4 +9,5 @@ jobs:
     secrets: inherit
   changelog:
     uses: onecx/ci-common/.github/workflows/generate-changelog.yml@v1
+    needs: helm
     secrets: inherit

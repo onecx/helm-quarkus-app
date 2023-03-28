@@ -46,14 +46,14 @@ pod:
 service:
   port: 8080
 
-# Route
+# Routing
 routing:
-  # Enable or disable route
+  # Enable or disable routing
   enabled: false
   # Default URL
   default_url: "change.com"
 
-  # route | traefik | ingress
+  # traefik | ingress
   type: none
 
   # path

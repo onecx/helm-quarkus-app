@@ -1,9 +1,11 @@
-name: Build Pull Request
+name: Build Feature Branch
+
 on:
-  pull_request:
+  push:
     branches:
-      - 'main'
-      - 'fix/[0-9]+.[0-9]+.x'
+      - '**'
+      - '!main'
+      - '!fix/[0-9]+.[0-9]+.x'
 
 jobs:
   helm:

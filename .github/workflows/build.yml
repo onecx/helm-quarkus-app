@@ -1,4 +1,4 @@
-name: build
+name: Build
 on:
   push:
     branches:
@@ -10,6 +10,7 @@ jobs:
     uses: onecx/ci-common/.github/workflows/helm-build.yml@v1
     secrets: inherit
     with:
+      push: true
       artifact: ''    
       helmdir: '.'
       helmAbsoluteDir: true

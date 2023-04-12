@@ -11,7 +11,7 @@ template: |
   Add Quarkus helm chart template as dependency to Chart.yaml:
   ```yaml
     dependencies:
-      - name: quarkus
+      - name: helm-quarkus-app
         alias: app
         version: "{{ .Version }}"
         repository: oci://ghcr.io/onecx/charts

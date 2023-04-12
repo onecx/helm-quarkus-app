@@ -7,7 +7,7 @@ Default helm template for OneCX Quarkus application.
 Add latest `0.x.x` version.
 ```yaml
   dependencies:
-    - name: quarkus
+    - name: helm-quarkus-app
       alias: app
       version: ^0
       repository: oci://ghcr.io/onecx/charts

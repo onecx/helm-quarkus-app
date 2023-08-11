@@ -106,6 +106,6 @@
 version: {{ .Values.version | default .Values.image.tag | quote }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-app.kubernetes.io/name: {{ .Release.Name | quote }}
+app.kubernetes.io/name: {{ template "quarkus.fullname" $ }}
 {{- end -}}
 

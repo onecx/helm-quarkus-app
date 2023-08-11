@@ -6,6 +6,7 @@ metadata:
   name: {{ template "quarkus.fullname" $ }}-ingress
   labels:
     app: {{ template "quarkus.fullname" $ }}
+{{ include "quarkus.labels.common" $ | indent 4 }}    
   annotations:
 {{- if (.Values.prometheus | default false) }}
     prometheus.io/ingress: '{{ .Values.routing.prometheus.ingress |  default "true" }}'

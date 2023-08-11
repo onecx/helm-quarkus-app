@@ -3,9 +3,9 @@
 kind: IngressRoute
 apiVersion: traefik.containo.us/v1alpha1
 metadata:
-  name: {{ .Release.Name }}-{{ .Release.Namespace }}
+  name: {{ template "quarkus.fullname" $ }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ template "quarkus.fullname" $ }}
 {{ include "quarkus.labels.common" $ | indent 4 }}
 spec:
   entryPoints:
@@ -17,20 +17,20 @@ spec:
     {{ end }}
   routes:
     - kind: Rule
-      {{ if .Values.global.hostName }}
-      match: Host(`{{ .Values.global.hostName }}`){{ include "quarkus.traefik.path" $ }}
-      {{ else if .Values.routing.hostName }}
-      match: Host(`{{ .Values.routing.hostName }}`){{ include "quarkus.traefik.path" $ }}
-      {{ else  }}
-      match: Host(`{{ .Release.Name }}-{{ .Release.Namespace }}.{{ .Values.global.default_url | default .Values.routing.default_url }}`){{ include "quarkus.traefik.path" $ }}
-      {{ end  }}
-      {{ if .Values.routing.stripprefix }}
+      {{ if .Values.routing.ingress.host.override }}
+      match: Host(`{{ .Values.routing.ingress.host.override }}.{{ .Values.global.default_url | default .Values.routing.default_url }}`){{ include "quarkus.traefik.path" $ }} 
+      {{ else if .Values.routing.ingress.host.name }}
+      match: Host(`{{ .Values.routing.ingress.host.name }}-{{ .Release.Namespace }}.{{ .Values.global.default_url | default .Values.routing.default_url }}`){{ include "quarkus.traefik.path" $ }} 
+      {{ else }}
+      match: Host(`{{ template "quarkus.fullname" $ }}-{{ .Release.Namespace }}.{{ .Values.global.default_url | default .Values.routing.default_url }}`){{ include "quarkus.traefik.path" $ }}             
+      {{- end }}
+      {{- if .Values.routing.stripprefix }}
       middlewares:
-        - name: {{ .Release.Name }}-{{ .Release.Namespace }}-middleware
+        - name: {{ template "quarkus.fullname" $ }}-middleware
       {{ end }}
       services:
         - kind: Service
-          name: {{ .Release.Name }}
+          name: {{ template "quarkus.fullname" $ }}
           port: {{ .Values.service.port }}
 {{ end }}
 {{ end }}

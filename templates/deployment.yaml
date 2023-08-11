@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ template "quarkus.fullname" $ }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ template "quarkus.fullname" $ }}
 {{ include "quarkus.labels.common" $ | indent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ template "quarkus.fullname" $ }}
   template:
     metadata:
       labels:
-        app: {{ .Release.Name }}
+        app: {{ template "quarkus.fullname" $ }}
 {{ include "quarkus.labels.common" $ | indent 8 }}
       annotations:
 {{- range $map_name := .Values.inject_maps }}
@@ -23,30 +23,30 @@ spec:
         checksum/{{ $map_name | replace "-" "_" }}: {{ index $.Values.global ($map_name | replace "-" "_") }}
 {{- end }}
 {{- if .Values.operator.keycloak.enabled }}
-        checksum/{{ $.Release.Name }}-config-keycloak: {{ include (print $.Template.BasePath "/config-keycloak.yaml") . | sha256sum }}
+        checksum/{{ template "quarkus.fullname" $ }}-config-keycloak: {{ include (print $.Template.BasePath "/config-keycloak.yaml") . | sha256sum }}
 {{- end }}
 {{- if and (.Values.operator.apm.enabled) (.Values.operator.apm.permissions) }}
-        checksum/{{ $.Release.Name }}-config-apm: {{ include (print $.Template.BasePath "/config-apm.yaml") . | sha256sum }}
+        checksum/{{ template "quarkus.fullname" $ }}-config-apm: {{ include (print $.Template.BasePath "/config-apm.yaml") . | sha256sum }}
 {{- end }}
 {{- if and (.Values.db.enabled) (.Values.operator.data.mgmt.enabled) }}
-        checksum/{{ $.Release.Name }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
+        checksum/{{ template "quarkus.fullname" $ }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
 {{- end }}
 {{- if .Values.db.enabled }} 
-        checksum/{{ $.Release.Name }}-config-db: {{ include (print $.Template.BasePath "/config-db.yaml") . | sha256sum }}
+        checksum/{{ template "quarkus.fullname" $ }}-config-db: {{ include (print $.Template.BasePath "/config-db.yaml") . | sha256sum }}
 {{- end }}
 {{- if .Values.env_secrets }}
-        checksum/{{ $.Release.Name }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
+        checksum/{{ template "quarkus.fullname" $ }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
 {{- end }}
     spec:
       {{- if .Values.serviceAccountSuffix }} 
-      serviceAccountName: {{ .Release.Name }}-{{ .Values.serviceAccountSuffix }}
+      serviceAccountName: {{ template "quarkus.fullname" $ }}-{{ .Values.serviceAccountSuffix }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets }}
       {{- end }}
       containers:
-      - name: {{ .Release.Name }}
+      - name: {{ template "quarkus.fullname" $ }}
         image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: Always
         ports:
@@ -80,7 +80,7 @@ spec:
           - name: {{ .Values.template.db_property_password }}
             valueFrom:
               secretKeyRef:
-                name: {{ .Release.Name }}-db-config
+                name: {{ template "quarkus.fullname" $ }}-db-config
                 key: password
           {{- end }}
           {{- $envVals := .Values.global.env -}}
@@ -100,7 +100,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key:  {{ $secret_key }}
-                name: {{ $.Release.Name }}-env
+                name: {{ template "quarkus.fullname" $ }}-env
           {{- end }}        
           {{- end }}
         
@@ -138,7 +138,7 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Release.Name }}-db-config
+                  name: {{ template "quarkus.fullname" $ }}-db-config
                   key: password
             - name: DISABLE_WELCOME_MESSAGE
               value: "true"

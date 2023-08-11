@@ -1,14 +1,17 @@
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ template "quarkus.fullname" $ }}
   labels:
-    app: {{ .Release.Name }}
-{{ include "quarkus.labels.common" $ | indent 4 }}
+    app: {{ template "quarkus.fullname" $ }}
+{{ include "quarkus.labels.common" $ | indent 4 }}    
+  annotations:
+    description: {{ template "quarkus.fullname" $ }}
 spec:
   selector:
-    app: {{ .Release.Name }}
+    app: {{ template "quarkus.fullname" $ }}
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: {{ .Values.service.port }}
       targetPort: {{ .Values.pod.port }}

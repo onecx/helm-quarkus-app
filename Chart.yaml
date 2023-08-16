@@ -4,9 +4,8 @@ version: 2.0.0
 description: Quarkus helm chart
 appVersion: 2.0.0
 keywords:
-- app
-- quarkus
+  - app
+  - quarkus
 maintainers:
-- name: Tkit Developer
-  email: tkit-dev@1000kit.org
-
+  - name: Tkit Developer
+    email: tkit-dev@1000kit.org

@@ -1,3 +1,7 @@
+{{- define "quarkus.fullname" -}}
+    {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
+{{- end -}}
+
 {{- define "quarkus.traefik.path" -}}
     {{ if .Values.routing.path }} && PathPrefix(`{{ .Values.routing.path }}`){{ end }}
 {{- end -}}
@@ -12,7 +16,7 @@
     {{- else if .Values.service.name -}}
         {{- .Values.service.name -}}
     {{- else -}}
-        {{- .Release.Name }}
+        {{- template "quarkus.fullname" $ }}
     {{- end -}}
 {{- end -}}
 
@@ -22,7 +26,7 @@
     {{- else if .Values.db.host -}}
         {{- .Values.db.host -}}
     {{- else -}}
-        {{- .Release.Name }}-postgresql
+        {{- template "quarkus.fullname" $ }}-postgresql
     {{- end -}}
 {{- end -}}
 
@@ -39,9 +43,9 @@
       {{- .Values.db.database -}}
     {{- else -}}
       {{- if not .Values.db.internal -}}
-        {{ .Release.Namespace | replace "1000kit" "tkit" | replace "-" "_" }}_{{ .Release.Name | replace "-" "_" }}
+        {{ .Release.Namespace | replace "1000kit" "tkit" | replace "-" "_" }}_{{ template "quarkus.fullname" $ | replace "-" "_" }}
       {{- else -}}
-        {{ .Release.Name | replace "-" "_" }}
+        {{ template "quarkus.fullname" $ | replace "-" "_" }}
       {{- end -}}
     {{- end -}}
 {{- end -}}
@@ -50,7 +54,7 @@
     {{- if .Values.db.password -}}
       {{- .Values.db.password -}}
     {{- else -}}
-      {{ .Release.Name | replace "-" "_" }}
+      {{ template "quarkus.fullname" $ | replace "-" "_" }}
     {{- end -}}
 {{- end -}}
 
@@ -59,9 +63,9 @@
       {{- .Values.db.username -}}
     {{- else -}}
       {{- if not .Values.db.internal -}}
-        {{ .Release.Namespace | replace "1000kit" "tkit" | replace "-" "_" }}_{{ .Release.Name | replace "-" "_" }}
+        {{ .Release.Namespace | replace "1000kit" "tkit" | replace "-" "_" }}_{{ template "quarkus.fullname" $ | replace "-" "_" }}
       {{- else -}}
-        {{ .Release.Name | replace "-" "_" }}
+        {{ template "quarkus.fullname" $ | replace "-" "_" }}
       {{- end -}}
     {{- end -}}
 {{- end -}}
@@ -102,6 +106,6 @@
 version: {{ .Values.version | default .Values.image.tag | quote }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
 app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-app.kubernetes.io/name: {{ .Release.Name | quote }}
+app.kubernetes.io/name: {{ template "quarkus.fullname" $ }}
 {{- end -}}
 

@@ -13,6 +13,9 @@ global:
     host:
     admin: {}
 
+# Name of the instance, default {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
+name:
+
 # Application image
 image:
   # Docker registry
@@ -25,10 +28,10 @@ image:
 # Image pull secrets
 imagePullSecrets:
 
-# health 
+# health
 livenessProbe:
   url: /q/health/live
-  
+
 readinessProbe:
   url: /q/health/ready
 
@@ -66,6 +69,13 @@ routing:
   ingress:
     annotations:
       ingress.kubernetes.io/ssl-redirect: "false"
+    # host configuration
+    host:
+      # prio1 if the name is define generate domain <override>.<default_url>
+      override:
+      # prio2 if the name is define generate domain <name>-<release_namespace>.<default_url>
+      name:
+      # else <release_name>-<name of chart_name>-<release_namespace>.<default_url>
   # custom service name and port for the routing
   service:
     name:
@@ -75,7 +85,7 @@ routing:
 replicas: 1
 
 # Service account suffix
-# serviceAccountName =  Release.Name-serviceAccountSuffix
+# serviceAccountName =  {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}-serviceAccountSuffix
 serviceAccountSuffix:
 
 # Inject config maps
@@ -85,19 +95,19 @@ inject_maps: []
 db:
   # Enable or disable database connection
   enabled: false
-  
+
   # Database name
   database:
-  
+
   # Database username
   username:
-  
+
   # Database password
   password:
 
   # Database port
   port: 5432
-  
+
   # JDBC url. Generated
   # url: "jdbc:postgresql://localhost:5432/changeit"
 
@@ -123,7 +133,7 @@ operator:
       prefix:
       # schema
       schema: public
-      
+
   # APM operator
   apm:
     # enabled or disable config for operator

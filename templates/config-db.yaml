@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ .Release.Name }}-db-config
+  name: {{ template "quarkus.fullname" $ }}-db-config
   annotations:
     org.tkit.db.operator/database: {{ include "quarkus.db.host" $ }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ template "quarkus.fullname" $ }}
 {{ include "quarkus.labels.common" $ | indent 4 }}    
 type: Opaque
 stringData:

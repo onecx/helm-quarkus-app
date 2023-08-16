@@ -1,8 +1,8 @@
 apiVersion: v2
 name: quarkus
-version: 3.0.0
+version: 2.0.0
 description: Quarkus helm chart
-appVersion: 3.0.0
+appVersion: 2.0.0
 keywords:
   - app
   - quarkus

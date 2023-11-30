@@ -71,6 +71,16 @@ spec:
           timeoutSeconds: 3
           successThreshold: 1
           failureThreshold: 5
+        startupProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/started
+            port: {{ .Values.pod.port }}
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10          
         env:
           {{- if .Values.db.enabled }}        
           - name: {{ .Values.template.db_property_url }}
@@ -103,7 +113,9 @@ spec:
                 name: {{ template "quarkus.fullname" $ }}-env
           {{- end }}        
           {{- end }}
-        
+          {{- if .Values.envCustom }} 
+            {{- .Values.envCustom | toYaml | trim | nindent 10 }}
+          {{- end }}
         {{- if or (.Values.global.inject_maps) (.Values.inject_maps) }}
         envFrom:
           {{- $im := .Values.global.inject_maps -}}

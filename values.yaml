@@ -34,6 +34,9 @@ livenessProbe:
 
 readinessProbe:
   url: /q/health/ready
+  
+startupProbe:
+  url: /q/health/started
 
 # Template env variable for Quarkus application
 template:

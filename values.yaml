@@ -34,7 +34,7 @@ livenessProbe:
 
 readinessProbe:
   url: /q/health/ready
-  
+
 startupProbe:
   url: /q/health/started
 
@@ -87,8 +87,12 @@ routing:
 # Replicas
 replicas: 1
 
-# Service account suffix
-# serviceAccountName =  {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}-serviceAccountSuffix
+
+serviceAccount:
+  enabled: false
+  name: 
+
+# Deprecated: Service account suffix
 serviceAccountSuffix:
 
 # Inject config maps

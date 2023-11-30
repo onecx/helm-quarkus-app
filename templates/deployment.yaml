@@ -38,6 +38,13 @@ spec:
         checksum/{{ template "quarkus.fullname" $ }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
 {{- end }}
     spec:
+      {{- if .Values.serviceAccount.enabled }}
+        {{- if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+        {{ else }}
+      serviceAccountName: {{ template "quarkus.fullname" $ }}     
+        {{- end }}
+      {{- end }}
       {{- if .Values.serviceAccountSuffix }} 
       serviceAccountName: {{ template "quarkus.fullname" $ }}-{{ .Values.serviceAccountSuffix }}
       {{- end }}

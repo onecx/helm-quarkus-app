@@ -40,9 +40,9 @@ startupProbe:
 
 # Template env variable for Quarkus application
 template:
-  db_property_url: "QUARKUS_DATASOURCE_JDBC_URL"
-  db_property_username: "QUARKUS_DATASOURCE_USERNAME"
-  db_property_password: "QUARKUS_DATASOURCE_PASSWORD"
+  db_property_url: "_PROD_QUARKUS_DATASOURCE_JDBC_URL"
+  db_property_username: "_PROD_QUARKUS_DATASOURCE_USERNAME"
+  db_property_password: "_PROD_QUARKUS_DATASOURCE_PASSWORD"
 
 # pod
 pod:

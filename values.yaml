@@ -19,11 +19,11 @@ name:
 # Application image
 image:
   # Docker registry
-  registry: "harbor.1000kit.org"
+  registry: "ghcr.io"
   # Docker repository (application name)
   repository: "change-me"
   # Docker image tag (application version)
-  tag: "master"
+  tag: "main"
 
 # Image pull secrets
 imagePullSecrets:

@@ -24,7 +24,6 @@ dependencies:
 
 ### Database
 
-Default the internal database is `disabled`
 The password for the database is store in the `{{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}-db-config` secrets.
 
 The database is created by the `tkit-db-operator`
@@ -39,8 +38,7 @@ External database.
 ```
 app:
   image:
-    repository: "onecx/${project.artifactId}"
-    tag: ${project.version}
+    repository: "onecx/onecx-app"
   db:
     enabled: true
 ```

@@ -42,11 +42,7 @@
     {{- if .Values.db.database -}}
       {{- .Values.db.database -}}
     {{- else -}}
-      {{- if not .Values.db.internal -}}
-        {{ .Release.Namespace | replace "1000kit" "tkit" | replace "-" "_" }}_{{ template "quarkus.fullname" $ | replace "-" "_" }}
-      {{- else -}}
-        {{ template "quarkus.fullname" $ | replace "-" "_" }}
-      {{- end -}}
+        {{ include "quarkus.fullname" $ | replace "-" "_" }}
     {{- end -}}
 {{- end -}}
 
@@ -54,7 +50,7 @@
     {{- if .Values.db.password -}}
       {{- .Values.db.password -}}
     {{- else -}}
-      {{ template "quarkus.fullname" $ | replace "-" "_" }}
+      {{ include "quarkus.fullname" $ | replace "-" "_" }}
     {{- end -}}
 {{- end -}}
 
@@ -62,35 +58,7 @@
     {{- if .Values.db.username -}}
       {{- .Values.db.username -}}
     {{- else -}}
-      {{- if not .Values.db.internal -}}
-        {{ .Release.Namespace | replace "1000kit" "tkit" | replace "-" "_" }}_{{ template "quarkus.fullname" $ | replace "-" "_" }}
-      {{- else -}}
-        {{ template "quarkus.fullname" $ | replace "-" "_" }}
-      {{- end -}}
-    {{- end -}}
-{{- end -}}
-
-{{- define "quarkus.db.admin.password" -}}
-    {{- if .Values.global.db.admin.password -}}
-        {{- .Values.global.db.admin.password -}}
-    {{- else -}}
-        {{- .Values.db.admin.password -}}
-    {{- end -}}
-{{- end -}}
-
-{{- define "quarkus.db.admin.username" -}}
-    {{- if .Values.global.db.admin.username -}}
-        {{- .Values.global.db.admin.username -}}
-    {{- else -}}
-        {{- .Values.db.admin.username -}}
-    {{- end -}}
-{{- end -}}
-
-{{- define "quarkus.db.admin.database" -}}
-    {{- if .Values.global.db.admin.database -}}
-        {{- .Values.global.db.admin.database -}}
-    {{- else -}}
-        {{- .Values.db.admin.database -}}
+        {{ include "quarkus.fullname" $ | replace "-" "_" }}
     {{- end -}}
 {{- end -}}
 

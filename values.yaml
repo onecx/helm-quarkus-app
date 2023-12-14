@@ -114,6 +114,9 @@ db:
   # Database port
   port: 5432
 
+  # enable or disable database operator to create a schema for the application
+  operator: true
+
   # JDBC url. Generated
   # url: "jdbc:postgresql://localhost:5432/changeit"
 

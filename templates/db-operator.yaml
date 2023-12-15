@@ -1,0 +1,18 @@
+{{- if .Values.db.enabled }}
+{{ if .Values.db.operator }}
+apiVersion: onecx.github.io/v1
+kind: Database
+metadata:
+  name: {{ template "quarkus.fullname" $ }}-db
+  labels:
+    app: {{ template "quarkus.fullname" $ }}
+{{ include "quarkus.labels.common" $ | indent 4 }}    
+spec:
+  host: {{ include "quarkus.db.host" $ }}
+  name: {{ include "quarkus.db.database" $ }}
+  user: {{ include "quarkus.db.username" $ }}
+  password-key: "password"
+  password-secrets: {{ template "quarkus.fullname" $ }}-db-config
+  schema: {{ include "quarkus.db.username" $ }}
+{{- end }}
+{{- end }}

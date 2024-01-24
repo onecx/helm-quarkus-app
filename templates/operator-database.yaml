@@ -1,0 +1,18 @@
+{{- if .Values.db.enabled }}
+{{ if .Values.db.operator }}
+apiVersion: onecx.github.io/v1
+kind: Database
+metadata:
+  name: {{ template "app.fullname" $ }}-db
+  labels:
+    app: {{ template "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}    
+spec:
+  host: {{ include "app.db.host" $ }}
+  name: {{ include "app.db.database" $ }}
+  user: {{ include "app.db.username" $ }}
+  password-key: "password"
+  password-secrets: {{ template "app.fullname" $ }}-db-config
+  schema: {{ include "app.db.username" $ }}
+{{- end }}
+{{- end }}

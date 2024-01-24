@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "quarkus.fullname" $ }}
+  name: {{ template "app.fullname" $ }}
   labels:
-    app: {{ template "quarkus.fullname" $ }}
-{{ include "quarkus.labels.common" $ | indent 4 }}
+    app: {{ template "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ template "quarkus.fullname" $ }}
+      app: {{ template "app.fullname" $ }}
   template:
     metadata:
       labels:
-        app: {{ template "quarkus.fullname" $ }}
-{{ include "quarkus.labels.common" $ | indent 8 }}
+        app: {{ template "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 8 }}
       annotations:
 {{- range $map_name := .Values.inject_maps }}
         checksum/{{ $map_name | replace "-" "_" }}: {{ index $.Values.global ($map_name | replace "-" "_") }}
@@ -23,37 +23,34 @@ spec:
         checksum/{{ $map_name | replace "-" "_" }}: {{ index $.Values.global ($map_name | replace "-" "_") }}
 {{- end }}
 {{- if .Values.operator.keycloak.enabled }}
-        checksum/{{ template "quarkus.fullname" $ }}-config-keycloak: {{ include (print $.Template.BasePath "/config-keycloak.yaml") . | sha256sum }}
-{{- end }}
-{{- if and (.Values.operator.apm.enabled) (.Values.operator.apm.permissions) }}
-        checksum/{{ template "quarkus.fullname" $ }}-config-apm: {{ include (print $.Template.BasePath "/config-apm.yaml") . | sha256sum }}
+        checksum/{{ template "app.fullname" $ }}-config-keycloak: {{ include (print $.Template.BasePath "/config-keycloak.yaml") . | sha256sum }}
 {{- end }}
 {{- if and (.Values.db.enabled) (.Values.operator.data.mgmt.enabled) }}
-        checksum/{{ template "quarkus.fullname" $ }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
+        checksum/{{ template "app.fullname" $ }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
 {{- end }}
 {{- if .Values.db.enabled }} 
-        checksum/{{ template "quarkus.fullname" $ }}-config-db: {{ include (print $.Template.BasePath "/config-db.yaml") . | sha256sum }}
+        checksum/{{ template "app.fullname" $ }}-config-db: {{ include (print $.Template.BasePath "/config-db.yaml") . | sha256sum }}
 {{- end }}
 {{- if .Values.env_secrets }}
-        checksum/{{ template "quarkus.fullname" $ }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
+        checksum/{{ template "app.fullname" $ }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
 {{- end }}
     spec:
       {{- if .Values.serviceAccount.enabled }}
         {{- if .Values.serviceAccount.name }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
         {{ else }}
-      serviceAccountName: {{ template "quarkus.fullname" $ }}     
+      serviceAccountName: {{ template "app.fullname" $ }}     
         {{- end }}
       {{- end }}
       {{- if .Values.serviceAccountSuffix }} 
-      serviceAccountName: {{ template "quarkus.fullname" $ }}-{{ .Values.serviceAccountSuffix }}
+      serviceAccountName: {{ template "app.fullname" $ }}-{{ .Values.serviceAccountSuffix }}
       {{- end }}
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets }}
       {{- end }}
       containers:
-      - name: {{ template "quarkus.fullname" $ }}
+      - name: {{ template "app.fullname" $ }}
         image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: Always
         ports:
@@ -91,13 +88,13 @@ spec:
         env:
           {{- if .Values.db.enabled }}        
           - name: {{ .Values.template.db_property_url }}
-            value: {{ include "quarkus.db.url" $  }}
+            value: {{ include "app.db.url" $  }}
           - name: {{ .Values.template.db_property_username }}
-            value: {{ include "quarkus.db.username" $ }}
+            value: {{ include "app.db.username" $ }}
           - name: {{ .Values.template.db_property_password }}
             valueFrom:
               secretKeyRef:
-                name: {{ template "quarkus.fullname" $ }}-db-config
+                name: {{ template "app.fullname" $ }}-db-config
                 key: password
           {{- end }}
           {{- $envVals := .Values.global.env -}}
@@ -117,7 +114,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key:  {{ $secret_key }}
-                name: {{ template "quarkus.fullname" $ }}-env
+                name: {{ template "app.fullname" $ }}-env
           {{- end }}        
           {{- end }}
           {{- if .Values.envCustom }} 
@@ -147,17 +144,17 @@ spec:
             - until pg_isready; do echo waiting for database; sleep 2; done;
           env:
             - name: PGHOST
-              value: {{ include "quarkus.db.host" $  }}
+              value: {{ include "app.db.host" $  }}
             - name: PGPORT
-              value: {{ include "quarkus.db.port" $ | quote }}
+              value: {{ include "app.db.port" $ | quote }}
             - name: PGDATABASE
-              value: {{ include "quarkus.db.database" $ }}
+              value: {{ include "app.db.database" $ }}
             - name: PGUSER
-              value: {{ include "quarkus.db.username" $ }}
+              value: {{ include "app.db.username" $ }}
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "quarkus.fullname" $ }}-db-config
+                  name: {{ template "app.fullname" $ }}-db-config
                   key: password
             - name: DISABLE_WELCOME_MESSAGE
               value: "true"

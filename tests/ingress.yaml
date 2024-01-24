@@ -1,0 +1,9 @@
+routing:
+  enabled: true
+  default_url: "change.com"
+  type: ingress
+  path:
+  bff: false
+  host:
+    override:
+    name:

@@ -1,0 +1,11 @@
+global:
+  hostName: test-app
+routing:
+  enabled: true
+  default_url: "change.com"
+  type: traefik
+  path: /my-app
+  bff: true
+  host:
+    override:
+    name:

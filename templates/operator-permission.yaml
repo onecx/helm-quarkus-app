@@ -1,0 +1,12 @@
+{{ if .Values.operator.permission.enabled }}
+apiVersion: onecx.github.io/v1
+kind: Permission
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    app: {{ include "app.fullname" . }}
+{{ include "app.labels.common" $ | indent 4 }}    
+spec:
+  appId: {{ .Values.operator.permission.spec.appId | default (include "app.fullname" .) }} 
+  permissions: {{ if .Values.operator.permission.spec.permissions }}{{ .Values.operator.permission.spec.permissions | toYaml | nindent 4 }}{{- end }}  
+{{- end }}

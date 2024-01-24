@@ -3,18 +3,18 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ template "quarkus.fullname" $ }}-data-mgmt-config"
+  name: "{{ template "app.fullname" $ }}-data-mgmt-config"
   labels:
-    app: {{ template "quarkus.fullname" $ }}
-{{ include "quarkus.labels.common" $ | indent 4 }}
+    app: {{ template "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}
 data:
   datasource-config: |-
     {
-      "fileNamePrefix": "{{ .Values.operator.data.mgmt.prefix | default (include "quarkus.fullname" $) }}",
+      "fileNamePrefix": "{{ .Values.operator.data.mgmt.prefix | default (include "app.fullname" $) }}",
       "dbType": "{{ .Values.operator.data.mgmt.dbType }}",
-      "url": {{ include "quarkus.db.url" $ }},
-      "user": "{{ include "quarkus.db.username" $ }}",
-      "password": "{{ include "quarkus.db.password" $ }}",
+      "url": {{ include "app.db.url" $ }},
+      "user": "{{ include "app.db.username" $ }}",
+      "password": "{{ include "app.db.password" $ }}",
       "dbSchemeName": "{{ .Values.operator.data.mgmt.schema }}"
     }
 {{ end }}

@@ -1,15 +1,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: {{ template "quarkus.fullname" $ }}
+  name: {{ template "app.fullname" $ }}
   labels:
-    app: {{ template "quarkus.fullname" $ }}
-{{ include "quarkus.labels.common" $ | indent 4 }}    
+    app: {{ template "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}    
   annotations:
-    description: {{ template "quarkus.fullname" $ }}
+    description: {{ template "app.fullname" $ }}
 spec:
   selector:
-    app: {{ template "quarkus.fullname" $ }}
+    app: {{ template "app.fullname" $ }}
   ports:
     - name: http
       protocol: TCP

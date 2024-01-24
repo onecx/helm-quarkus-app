@@ -1,0 +1,9 @@
+routing:
+  enabled: true
+  default_url: "change.com"
+  type: traefik
+  path:
+  bff: true
+  host:
+    override:
+    name:

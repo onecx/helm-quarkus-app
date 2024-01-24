@@ -1,0 +1,30 @@
+{{- if .Values.routing.enabled }}
+{{- if eq (include "app.routing.type" $) "traefik" }}
+kind: IngressRoute
+apiVersion: traefik.io/v1alpha1
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    app: {{ include "app.fullname" . }}
+{{ include "app.labels.common" $ | indent 4 }}    
+spec:
+  entryPoints:
+    {{- range $ep := .Values.routing.entryPoints }}
+    - {{ $ep }}
+    {{ end }}
+    {{- range $ep := .Values.global.routing.entryPoints }}
+    - {{ $ep }}
+    {{ end }}
+  routes:
+    - kind: Rule
+      match: Host(`{{ include "app.ingress.host" . | trim }}`){{ if .Values.routing.path }} && PathPrefix(`{{ .Values.routing.path }}`){{ end }}
+      {{ if .Values.routing.traefik.middleware.enabled }}
+      middlewares:
+        - name: {{ .Values.routing.traefik.middleware.name }}
+      {{ end }}
+      services:
+        - kind: Service
+          name: {{ include "app.routing.service" $ }}
+          port: {{ .Values.routing.service.port | default .Values.service.port }}
+{{ end }}
+{{ end }}

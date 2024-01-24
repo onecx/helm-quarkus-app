@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "{{ template "quarkus.fullname" $ }}-kc-config"
+  name: "{{ template "app.fullname" $ }}-kc-config"
   annotations:
     tkit.kc.cli/target-realm: {{ .Values.global.operator.keycloak.realm | default .Values.operator.keycloak.realm }}
   labels:
-    app: {{ template "quarkus.fullname" $ }}
-{{ include "quarkus.labels.common" $ | indent 4 }}
+    app: {{ template "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}
 data:
 {{ if .Values.operator.keycloak.client }}
   client: |-

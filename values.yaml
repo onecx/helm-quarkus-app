@@ -64,6 +64,9 @@ routing:
   # path
   path:
 
+  # routing for bff
+  bff: false
+
   # host configuration
   host:
     # prio1 if the name is define generate domain <override>.<default_url>

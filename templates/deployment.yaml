@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "app.fullname" $ }}
+  name: {{ include "app.fullname" . }}
   labels:
-    app: {{ template "app.fullname" $ }}
+    app: {{ include "app.fullname" . }}
 {{ include "app.labels.common" $ | indent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ template "app.fullname" $ }}
+      app: {{ include "app.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ template "app.fullname" $ }}
+        app: {{ include "app.fullname" . }}
 {{ include "app.labels.common" $ | indent 8 }}
       annotations:
 {{- range $map_name := .Values.inject_maps }}
@@ -49,10 +49,17 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.imagePullSecrets }}
       {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+        {{- .Values.nodeSelector | toYaml | trim | nindent 8 }}
+      {{- else if .Values.global.nodeSelector }}
+      nodeSelector:
+        {{- .Values.global.nodeSelector | toYaml | trim | nindent 8 }}
+      {{- end }}
       containers:
       - name: {{ template "app.fullname" $ }}
         image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
-        imagePullPolicy: Always
+        imagePullPolicy: {{ .Values.image.pull }}
         ports:
         - containerPort: {{ .Values.pod.port }}
         readinessProbe:

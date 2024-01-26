@@ -12,6 +12,9 @@ global:
     port:
     host:
 
+  # node selector for the pods
+  nodeSelector:
+  
 # Name of the instance, default {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
 name:
 
@@ -23,6 +26,8 @@ image:
   repository: "change-me"
   # Docker image tag (application version)
   tag: "main"
+  # pull policy Always | IfNotPresent | Never
+  pull: IfNotPresent
 
 # Image pull secrets
 imagePullSecrets:
@@ -42,6 +47,9 @@ template:
   db_property_url: "_PROD_QUARKUS_DATASOURCE_JDBC_URL"
   db_property_username: "_PROD_QUARKUS_DATASOURCE_USERNAME"
   db_property_password: "_PROD_QUARKUS_DATASOURCE_PASSWORD"
+
+# node selector for the pods
+nodeSelector:
 
 # pod
 pod:

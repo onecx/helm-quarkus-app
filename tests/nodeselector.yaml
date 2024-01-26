@@ -1,0 +1,8 @@
+global:
+  nodeSelector:
+    g1: value1
+    g2: value2
+nodeSelector:
+  key1: value1
+  key2: value2
+  topology.kubernetes.io/zone: "eu-central-1a"

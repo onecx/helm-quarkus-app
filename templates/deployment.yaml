@@ -28,9 +28,6 @@ spec:
 {{- if and (.Values.db.enabled) (.Values.operator.data.mgmt.enabled) }}
         checksum/{{ template "app.fullname" $ }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
 {{- end }}
-{{- if .Values.db.enabled }} 
-        checksum/{{ template "app.fullname" $ }}-config-db: {{ include (print $.Template.BasePath "/config-db.yaml") . | sha256sum }}
-{{- end }}
 {{- if .Values.env_secrets }}
         checksum/{{ template "app.fullname" $ }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
 {{- end }}

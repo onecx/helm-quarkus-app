@@ -89,7 +89,7 @@ spec:
         startupProbe:
           failureThreshold: 3
           httpGet:
-            path: /q/health/started
+            path: {{ .Values.startupProbe.url }}
             port: {{ .Values.pod.port }}
             scheme: HTTP
           initialDelaySeconds: 5

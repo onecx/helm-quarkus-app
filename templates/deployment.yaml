@@ -53,6 +53,13 @@ spec:
       nodeSelector:
         {{- .Values.global.nodeSelector | toYaml | trim | nindent 8 }}
       {{- end }}
+      {{- if .Values.tolerations }}
+      nodeSelector:
+        {{- .Values.tolerations | toYaml | trim | nindent 8 }}
+      {{- else if .Values.global.tolerations }}
+      tolerations:
+        {{- .Values.global.tolerations | toYaml | trim | nindent 8 }}
+      {{- end }}
       containers:
       - name: {{ template "app.fullname" $ }}
         image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}

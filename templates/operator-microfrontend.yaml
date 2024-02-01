@@ -1,0 +1,32 @@
+{{ if .Values.operator.microfrontend.enabled }}
+apiVersion: onecx.tkit.org/v1
+kind: Microfrontend
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    app: {{ include "app.fullname" . }}
+{{ include "app.labels.common" $ | indent 4 }}    
+spec:
+  appId: {{ .Values.operator.microfrontend.spec.appId | default (include "app.id" .) }} 
+  appName: {{ .Values.operator.microfrontend.spec.appName | default (include "app.fullname" .) }} 
+  appVersion: {{ template "app.version" $ }}
+  classifications: {{ .Values.operator.microfrontend.spec.classifications }} 
+  contact: {{ .Values.operator.microfrontend.spec.contact }} 
+  description: {{ .Values.operator.microfrontend.spec.description }} 
+  exposedModule: {{ .Values.operator.microfrontend.spec.exposedModule }}
+  iconName: {{ .Values.operator.microfrontend.spec.iconName }}
+  note: {{ .Values.operator.microfrontend.spec.note }}
+  tagName: {{ .Values.operator.microfrontend.spec.tagName }}
+  remoteName: {{ .Values.operator.microfrontend.spec.remoteName }}
+  productName: {{ .Values.operator.microfrontend.spec.productName | default .Release.Name }}
+  remoteBaseUrl: {{ .Values.operator.microfrontend.spec.remoteBaseUrl | default .Values.routing.path }}
+  remoteEntry: {{ .Values.operator.microfrontend.spec.remoteBaseUrl | default .Values.routing.path }}{{ .Values.operator.microfrontend.entrySuffix }}
+  technology: {{ .Values.operator.microfrontend.spec.technology }}
+  {{ if (.Values.operator.microfrontend.spec.endpoints) }}  
+  endpoints:
+  {{- range $item := .Values.operator.microfrontend.spec.endpoints }}
+    - name: {{ $item.name }}
+      path: {{ $item.path }}
+  {{- end }}
+  {{- end }}
+{{- end }}

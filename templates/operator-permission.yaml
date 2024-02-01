@@ -1,5 +1,5 @@
 {{ if .Values.operator.permission.enabled }}
-apiVersion: onecx.github.io/v1
+apiVersion: onecx.tkit.org/v1
 kind: Permission
 metadata:
   name: {{ include "app.fullname" . }}
@@ -8,5 +8,7 @@ metadata:
 {{ include "app.labels.common" $ | indent 4 }}    
 spec:
   appId: {{ .Values.operator.permission.spec.appId | default (include "app.fullname" .) }} 
+  name: {{ .Values.operator.permission.spec.name | default (include "app.fullname" .) }}
+  description: appId: {{ .Values.operator.permission.spec.description | default (include "app.fullname" .) }}
   permissions: {{ if .Values.operator.permission.spec.permissions }}{{ .Values.operator.permission.spec.permissions | toYaml | nindent 4 }}{{- end }}  
 {{- end }}

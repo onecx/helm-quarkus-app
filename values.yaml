@@ -164,6 +164,10 @@ operator:
     spec:      
       # default deployment name (release_name-name)
       appId:
+      # application name (release_name-name)
+      name:
+      # application description (release_name-name)
+      description:
       # map of permissions
       # resource:
       #    action: description
@@ -193,3 +197,39 @@ operator:
     roles:
     # path to the realms JSON file
     realms:
+
+  # microfrontend
+  microfrontend:
+    # enable or disable configuration for operator
+    enabled: false
+    # default remote entry path suffix
+    entrySuffix: remoteEntry.js
+
+    # definnition
+    spec:
+      description: change-me
+      exposedModule: change-me
+      iconName:
+      note: change-me
+      remoteName:
+      tagName:      
+      # list of strings
+      classifications: []      
+      # list of name and path
+      # - name:
+      #   path:
+      endpoints:
+      # technology is free text
+      technology: ANGULAR
+      # contact email
+      contact: onecx@1000kit.org
+      # default is app.routing.path
+      remoteBaseUrl:
+      # default is app.routing.path + entrySuffix
+      remoteEntry:
+      # default release name (product name)
+      productName:      
+      # default deployment name (release_name-name or appId)
+      appId:
+      # default deployment name (release_name-name)
+      appName:

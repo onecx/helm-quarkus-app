@@ -1,6 +1,6 @@
 {{- if .Values.db.enabled }}
 {{ if .Values.db.operator }}
-apiVersion: onecx.github.io/v1
+apiVersion: onecx.tkit.org/v1
 kind: Database
 metadata:
   name: {{ template "app.fullname" $ }}-db

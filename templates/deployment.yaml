@@ -62,7 +62,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ template "app.fullname" $ }}
-        image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ include "app.image.tag" . }}
         imagePullPolicy: {{ .Values.image.pull }}
         ports:
         - containerPort: {{ .Values.pod.port }}

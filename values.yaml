@@ -32,6 +32,10 @@ image:
   tag: "main"
   # pull policy Always | IfNotPresent | Never
   pull: IfNotPresent
+  # tag suffix for example native
+  suffix:
+  # tag suffix seprator
+  separator: "-"
 
 # Image pull secrets
 imagePullSecrets:

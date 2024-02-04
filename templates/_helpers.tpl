@@ -14,6 +14,14 @@
 {{ if .Values.global.routing.type }}{{ .Values.global.routing.type }}{{ else }}{{ .Values.routing.type }}{{ end }}
 {{- end -}}
 
+{{- define "app.image.tag" -}}
+    {{- if .Values.image.suffix -}}
+        {{ .Values.image.tag }}{{ .Values.image.separator }}{{ .Values.image.suffix }}
+    {{- else -}}
+        {{ .Values.image.tag }}
+    {{- end -}}
+{{- end -}}
+
 {{- define "app.routing.service" -}}
     {{- if .Values.routing.service.name -}}
         {{- .Values.routing.service.name -}}

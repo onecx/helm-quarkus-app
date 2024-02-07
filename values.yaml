@@ -237,3 +237,57 @@ operator:
       appId:
       # default deployment name (release_name-name)
       appName:
+
+  # Keycloak client operator
+  keycloak_client:
+    # enabled or disable config for operator
+    enabled: false
+    # definition
+    spec:
+      # keycloak realm where the client has to be created
+      realm:
+      # type of client. Current possibilities [ ui | machine ]
+      type:
+      # Name of Secret where the password is stored (alternative is to set kcConfig.password)
+      passwordSecrets:
+      # Key used in secret where password is stored
+      passwordKey:
+      # Configuration for the keycloak client
+      kcConfig:
+        # default deployment name (release_name-name)
+        clientId:
+        # description for the client
+        description:
+        # flag to enable/disable client in keycloak
+        enabled:
+        # client authenticator type (client-secret)
+        clientAuthenticatorType:
+        # Password to be set for the client (for ui client it can be empty)
+        password:
+        # Redirect uris (used for the ui client). List of Strings
+        redirectUris: []
+        # Web origins (user for the ui client). List of Strings
+        webOrigins: []
+        # Bearer only flag
+        bearerOnly:
+        # Standard flow enabled flag
+        standardFlowEnabled:
+        # Implicit flow enabled flag
+        implicitFlowEnabled:
+        # Direct access grants enable flag
+        directAccessGrantsEnabled:
+        # Service accounts enabled flag
+        serviceAccountsEnabled:
+        # Public client flag
+        publicClient:
+        # Protocol (openid-connect)
+        protocol:
+        # List of string scopes to be added as default
+        defaultClientScopes: []
+        # List of string scopes to be added as optional
+        optionalClientScopes: []
+        # Map of custom attributes
+        attributes:
+          #key1: value1
+          #key2: value2
+      

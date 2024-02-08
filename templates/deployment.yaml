@@ -108,6 +108,18 @@ spec:
                 name: {{ template "app.fullname" $ }}-db-config
                 key: password
           {{- end }}
+          {{- if .Values.operator.keycloak.client.enabled }}
+          - name: {{ .Values.template.oidc_client_id }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "app.oidc.client.secret.name" $ }}
+                key: clientId 
+          - name: {{ .Values.template.oidc_client_credential }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "app.oidc.client.secret.name" $ }}
+                key: secret
+          {{- end }}
           {{- $envVals := .Values.global.env -}}
           {{- if (.Values.env) }}
           {{- $envVals = merge .Values.env $envVals -}}

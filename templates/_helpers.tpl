@@ -102,6 +102,18 @@
     {{ end }}
 {{- end -}}
 
+{{- define "app.oidc.client.secret.name" -}}
+    {{ template "app.fullname" $ }}-kc-client-config
+{{- end -}}
+
+{{- define "app.oidc.client.password" -}}
+    {{- if .Values.operator.keycloak.client.password -}}
+      {{- .Values.operator.keycloak.client.password -}}
+    {{- else -}}
+      {{ include "app.fullname" $ | replace "-" "_" }}
+    {{- end -}}
+{{- end -}}
+
 {{- define "app.labels.common" -}}
 version: {{ .Values.version | default .Values.image.tag | quote }}
 helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}

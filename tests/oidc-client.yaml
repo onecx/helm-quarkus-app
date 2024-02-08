@@ -1,0 +1,4 @@
+operator:
+  keycloak:
+    client:
+      enabled: true

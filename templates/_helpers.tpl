@@ -102,6 +102,16 @@
     {{ end }}
 {{- end -}}
 
+{{- define "app.oidc.client.url" -}}
+    {{- if .Values.oidc.client.url -}}  
+        {{- .Values.oidc.client.url -}}
+    {{- else if .Values.global.oidc.client.url -}}
+        {{- .Values.global.oidc.client.url -}}
+    {{- else -}}
+        {{ "${" }}{{-  .Values.template.oidc_server_url -}}{{ "}" }}
+    {{- end -}}
+{{- end -}}
+
 {{- define "app.oidc.client.secret.name" -}}
     {{ template "app.fullname" $ }}-kc-client-config
 {{- end -}}

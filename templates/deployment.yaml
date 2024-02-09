@@ -109,6 +109,8 @@ spec:
                 key: password
           {{- end }}
           {{- if .Values.operator.keycloak.client.enabled }}
+          - name: {{ .Values.template.oidc_client_url }}
+            value: {{ include "app.oidc.client.url" $ }}
           - name: {{ .Values.template.oidc_client_id }}
             valueFrom:
               secretKeyRef:

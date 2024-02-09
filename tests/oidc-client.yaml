@@ -1,3 +1,10 @@
+# global:
+#   oidc:
+#     client:
+#       url: "http://google.sk"
+# oidc:
+#   client:
+#     url: "http://google.com"
 operator:
   keycloak:
     client:

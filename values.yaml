@@ -18,6 +18,13 @@ global:
   # tolerations for the pods
   tolerations:
 
+  # configuration for the oidc extension
+  oidc:
+    # configuration for the oidc-client
+    client:
+      # define auth-url for the oidc-client
+      url:
+
 
 # Name of the instance, default {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
 name:
@@ -57,6 +64,8 @@ template:
   db_property_password: "_PROD_QUARKUS_DATASOURCE_PASSWORD"
   oidc_client_credential: "_PROD_QUARKUS_OIDC_CLIENT_CREDENTIALS_SECRET"
   oidc_client_id: "_PROD_QUARKUS_OIDC_CLIENT_CLIENT_ID"
+  oidc_client_url: "_PROD_QUARKUS_OIDC_CLIENT_AUTH_SERVER_URL"
+  oidc_server_url: "QUARKUS_OIDC_AUTH_SERVER_URL"
 
 # node selector for the pods
 nodeSelector:
@@ -159,6 +168,13 @@ db:
     registry: docker.io
     repository: bitnami/postgresql
     tag: 12.2.0
+
+# configuration for the oidc extension
+oidc:
+  # configuration for the oidc-client
+  client:
+    # define auth-url for the oidc-client
+    url:
 
 # Kubernetes operator configuration
 operator:

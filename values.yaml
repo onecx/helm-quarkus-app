@@ -163,11 +163,25 @@ db:
   # Database host, Generated
   # host: app-postgresql
 
-  # Database image
-  image:
-    registry: docker.io
-    repository: bitnami/postgresql
-    tag: 12.2.0
+  check:
+    # Enable or disable check database connection with init container
+    enabled: true
+    # name of the init container
+    name: check-db  
+    # container image configuration
+    image:
+      # Docker registry
+      registry: "ghcr.io"
+      # Docker repository (application name)
+      repository: "onecx/onecx-db-check"
+      # Docker image tag (application version)
+      tag: "0.1.0"
+      # pull policy Always | IfNotPresent | Never
+      pull: IfNotPresent
+      # tag suffix for example native
+      suffix: "native"
+      # tag suffix seprator
+      separator: "-"
 
 # configuration for the oidc extension
 oidc:

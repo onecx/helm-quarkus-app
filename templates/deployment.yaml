@@ -161,26 +161,19 @@ spec:
 
       initContainers:
         {{- if .Values.db.enabled }}
-        - name: "check-db"
-          image: "{{ .Values.db.image.registry }}/{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
-          command:
-            - /bin/bash
-            - -c
-            - until pg_isready; do echo waiting for database; sleep 2; done;
+        {{- if .Values.db.check.enabled }}
+        - name: {{ .Values.db.check.name }}
+          image: {{ .Values.db.check.image.registry }}/{{ .Values.db.check.image.repository }}:{{ include "app.db.check.image.tag" . }}
+          imagePullPolicy: {{ .Values.db.check.image.pull }}
           env:
-            - name: PGHOST
-              value: {{ include "app.db.host" $  }}
-            - name: PGPORT
-              value: {{ include "app.db.port" $ | quote }}
-            - name: PGDATABASE
-              value: {{ include "app.db.database" $ }}
-            - name: PGUSER
+            - name: {{ .Values.template.db_property_url }}
+              value: {{ include "app.db.url" $  }}
+            - name: {{ .Values.template.db_property_username }}
               value: {{ include "app.db.username" $ }}
-            - name: PGPASSWORD
+            - name: {{ .Values.template.db_property_password }}
               valueFrom:
                 secretKeyRef:
                   name: {{ template "app.fullname" $ }}-db-config
                   key: password
-            - name: DISABLE_WELCOME_MESSAGE
-              value: "true"
+        {{- end }}
         {{- end }}

@@ -22,6 +22,14 @@
     {{- end -}}
 {{- end -}}
 
+{{- define "app.db.check.image.tag" -}}
+    {{- if .Values.db.check.image.suffix -}}
+        {{ .Values.db.check.image.tag }}{{ .Values.db.check.image.separator }}{{ .Values.db.check.image.suffix }}
+    {{- else -}}
+        {{ .Values.db.check.image.tag }}
+    {{- end -}}
+{{- end -}}
+
 {{- define "app.routing.service" -}}
     {{- if .Values.routing.service.name -}}
         {{- .Values.routing.service.name -}}

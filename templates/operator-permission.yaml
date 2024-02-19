@@ -7,7 +7,7 @@ metadata:
     app: {{ include "app.fullname" . }}
 {{ include "app.labels.common" $ | indent 4 }}    
 spec:
-  productName: {{ .Values.operator.permission.spec.productName | default .Release.Name }}
+  productName: {{ include "app.permission.product.name" $ }}
   appId: {{ .Values.operator.permission.spec.appId | default (include "app.fullname" .) }} 
   name: {{ .Values.operator.permission.spec.name | default (include "app.fullname" .) }}
   description: {{ .Values.operator.permission.spec.description | default (include "app.fullname" .) }}

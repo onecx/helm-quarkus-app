@@ -108,6 +108,10 @@ spec:
                 name: {{ template "app.fullname" $ }}-db-config
                 key: password
           {{- end }}
+          {{- if .Values.operator.permission.enabled }}          
+          - name: {{ .Values.template.permision_product_name }}
+            value: {{ include "app.permission.product.name" $ }}
+          {{- end }}          
           {{- if .Values.operator.keycloak.client.enabled }}
           - name: {{ .Values.template.oidc_client_url }}
             value: {{ include "app.oidc.client.url" $ }}

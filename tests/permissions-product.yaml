@@ -1,0 +1,5 @@
+operator:
+  permission:
+    enabled: true
+    spec:
+      productName: newProductName

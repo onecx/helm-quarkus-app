@@ -66,7 +66,7 @@ template:
   oidc_client_id: "_PROD_QUARKUS_OIDC_CLIENT_CLIENT_ID"
   oidc_client_url: "_PROD_QUARKUS_OIDC_CLIENT_AUTH_SERVER_URL"
   oidc_server_url: "QUARKUS_OIDC_AUTH_SERVER_URL"
-
+  permision_product_name: "ONECX_PERMISSIONS_PRODUCT_NAME"
 # node selector for the pods
 nodeSelector:
 

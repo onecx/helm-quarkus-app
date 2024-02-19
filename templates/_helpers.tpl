@@ -2,6 +2,11 @@
     {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
 {{- end -}}
 
+{{- define "app.product.name" -}}
+    {{ .Release.Name }}
+{{- end -}}
+
+
 {{- define "app.version" -}}
     {{ .Values.image.tag }} 
 {{- end -}}
@@ -129,6 +134,14 @@
       {{- .Values.operator.keycloak.client.password -}}
     {{- else -}}
       {{ include "app.fullname" $ | replace "-" "_" }}
+    {{- end -}}
+{{- end -}}
+
+{{- define "app.permission.product.name" -}}
+    {{- if .Values.operator.permission.spec.productName -}}
+        {{- .Values.operator.permission.spec.productName -}}
+    {{- else -}}
+        {{ include "app.product.name" $ }}
     {{- end -}}
 {{- end -}}
 

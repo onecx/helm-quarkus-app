@@ -198,6 +198,8 @@ operator:
     enabled: false
 
     spec:      
+      # default release name (product name)
+      productName:
       # default deployment name (release_name-name)
       appId:
       # application name (release_name-name)
@@ -251,7 +253,7 @@ operator:
       # default is app.routing.path + entrySuffix
       remoteEntry:
       # default release name (product name)
-      productName:      
+      productName:
       # default deployment name (release_name-name or appId)
       appId:
       # default deployment name (release_name-name)

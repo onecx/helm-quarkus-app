@@ -192,6 +192,23 @@ oidc:
 
 # Kubernetes operator configuration
 operator:
+  # product store microservice
+  microservice:
+    # enable or disable configuration for operator
+    enabled: true
+    # CRD
+    spec:
+      # default deployment name (release_name-name)
+      appId:
+      # default release name (product name)
+      productName:
+      # application description (release_name-name)
+      description:
+      # default deployment name (release_name-name)
+      name:
+      # .Values.name or this type
+      type:
+
   # permissions
   permission:
     # enable or disable configuration for operator

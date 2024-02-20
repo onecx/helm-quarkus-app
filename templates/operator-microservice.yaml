@@ -1,0 +1,16 @@
+{{ if .Values.operator.microservice.enabled }}
+apiVersion: onecx.tkit.org/v1
+kind: Microservice
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    app: {{ include "app.fullname" . }}
+{{ include "app.labels.common" $ | indent 4 }}    
+spec:
+  productName: {{ include "app.microservice.product.name" $ }}
+  appId: {{ .Values.operator.microservice.spec.appId | default (include "app.fullname" .) }} 
+  name: {{ .Values.operator.microservice.spec.name | default (include "app.fullname" .) }}
+  description: {{ .Values.operator.microservice.spec.description | default (include "app.fullname" .) }}
+  version: {{ template "app.version" $ }}
+  type: {{ .Values.operator.microservice.spec.type | default .Values.name }}
+{{- end }}

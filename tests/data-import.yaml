@@ -1,0 +1,11 @@
+data:
+  import:
+    enabled: true
+properties: |
+  quarkus.property.1=value1
+  quarkus.property.2=value2
+  # documentation
+  quarkus.property.3=value3
+image:
+  tag: 1.0.0-rc.1
+  suffix: native

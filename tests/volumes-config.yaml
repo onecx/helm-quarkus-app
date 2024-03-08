@@ -1,0 +1,12 @@
+
+
+volumes:
+  configMaps:
+    datasource-config-full:
+        name: full-config-name
+        mountPath: /test/datasource-config.json
+        subPath: datasource-config
+    datasource-config:
+        suffix: data-mgmt-config
+        mountPath: /test/datasource-config.json
+        subPath: datasource-config        

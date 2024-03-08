@@ -1,0 +1,12 @@
+{{- if .Values.config.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "app.fullname" $ }}-{{ .Values.config.suffix }}"
+  labels:
+    app: {{ include "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}
+data:
+  {{ .Values.config.subPath }}: |
+  {{- if (.Values.config.values) }}{{- .Values.config.values | trim | nindent 4 }}{{ end }}
+{{ end }}

@@ -29,6 +29,54 @@ global:
 # Name of the instance, default {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
 name:
 
+# config/application.properties
+config:
+
+  # enabled or disable application.properties config map
+  enabled: false
+
+  # name of the config volume mounts
+  name: application-properties
+
+  # file system mounting path
+  mountPath: /deployments/config/application.properties
+
+  # config map key
+  subPath: application.properties
+
+  # config map suffix <app_name>-<suffix>
+  suffix: "application-properties"
+
+  # values: |
+  #   quarkus.property1=value
+  #   quarkus.property2=value  
+  values:
+
+data:
+
+  # create config map for data import
+  import:
+    # enabled or disable application.properties config map
+    enabled: false
+
+    # name of the config volume mounts
+    name: data-import
+
+    # file system mounting path
+    mountPath: /deployments/data/data-import.json
+
+    # config map key
+    subPath: data-import.json
+
+    # config map suffix <app_name>-<suffix>
+    suffix: "data-import"
+
+    # values to import
+    values:
+    # values: |    
+    #   quarkus.property1=value
+    #   quarkus.property2=value  
+
 # Application image
 image:
   # Docker registry

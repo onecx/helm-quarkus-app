@@ -22,9 +22,6 @@ spec:
 {{- range $map_name := .Values.global.inject_maps }}
         checksum/{{ $map_name | replace "-" "_" }}: {{ index $.Values.global ($map_name | replace "-" "_") }}
 {{- end }}
-{{- if .Values.operator.keycloak.enabled }}
-        checksum/{{ template "app.fullname" $ }}-config-keycloak: {{ include (print $.Template.BasePath "/config-keycloak.yaml") . | sha256sum }}
-{{- end }}
 {{- if and (.Values.db.enabled) (.Values.operator.data.mgmt.enabled) }}
         checksum/{{ template "app.fullname" $ }}-config-data-mgmt: {{ include (print $.Template.BasePath "/config-data-mgmt.yaml") . | sha256sum }}
 {{- end }}
@@ -64,6 +61,17 @@ spec:
       - name: {{ template "app.fullname" $ }}
         image: {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ include "app.image.tag" . }}
         imagePullPolicy: {{ .Values.image.pull }}
+        volumeMounts:
+        {{- if .Values.config.enabled }}
+          - name: {{ .Values.config.name }}
+            mountPath: {{ .Values.config.mountPath }}
+            subPath: {{ .Values.config.subPath }}
+        {{- end }}
+        {{- if .Values.data.import.enabled }}
+          - name: {{ .Values.data.import.name }}
+            mountPath: {{ .Values.data.import.mountPath }}
+            subPath: {{ .Values.data.import.subPath }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.pod.port }}
         readinessProbe:
@@ -181,3 +189,15 @@ spec:
                   key: password
         {{- end }}
         {{- end }}
+
+      volumes:
+      {{- if .Values.data.import.enabled }}
+        - name: {{ .Values.data.import.name }}
+          configMap:
+            name: {{ include "app.fullname" $ }}-{{ .Values.data.import.suffix }}
+      {{- end }}      
+      {{- if .Values.config.enabled }}
+        - name: {{ .Values.config.name }}
+          configMap:
+            name: {{ include "app.fullname" $ }}-{{ .Values.config.suffix }}
+      {{- end }}

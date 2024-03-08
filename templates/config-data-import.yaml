@@ -1,0 +1,12 @@
+{{- if .Values.data.import.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{ include "app.fullname" $ }}-{{ .Values.data.import.suffix }}"
+  labels:
+    app: {{ include "app.fullname" $ }}
+{{ include "app.labels.common" $ | indent 4 }}
+data:
+  {{ .Values.data.import.subPath }}: |
+  {{- if (.Values.data.import.values) }}{{- .Values.data.import.values | trim | nindent 4 }}{{ end }}
+{{ end }}

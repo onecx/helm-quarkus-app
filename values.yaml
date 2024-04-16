@@ -292,35 +292,66 @@ operator:
   microfrontend:
     # enable or disable configuration for operator
     enabled: false
+
     # default remote entry path suffix
     entrySuffix: remoteEntry.js
 
-    # definnition
+    # map of <name, spec> of mfe spec ( see spec )
+    specs:
+
+    # definnition and default values for the list of spec 'specs'
     spec:
+      
+      # deprecated true | false
+      deprecated: false
+
+      # type oe mfe [ MODULE, COMPONENT ]
+      type: MODULE
+      
+      # description text
       description: change-me
+      
+      # exposed module name
       exposedModule: change-me
+      
+      # icon name
       iconName:
-      note: change-me
+      
+      # note
+      note:
+      
+      # remote name
       remoteName:
-      tagName:      
+
+      # tag name
+      tagName:
+
       # list of strings
       classifications: []      
+
       # list of name and path
+      endpoints:
       # - name:
       #   path:
-      endpoints:
+
       # technology is free text
       technology: ANGULAR
+
       # contact email
       contact: onecx@1000kit.org
+
       # default is app.routing.path
       remoteBaseUrl:
+      
       # default is app.routing.path + entrySuffix
       remoteEntry:
+
       # default release name (product name)
-      productName:
+      productName:      
+      
       # default deployment name (release_name-name or appId)
       appId:
+
       # default deployment name (release_name-name)
       appName:
 

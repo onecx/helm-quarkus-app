@@ -1,0 +1,12 @@
+operator:
+  microfrontend:
+    enabled: true
+    specs:
+      OneCXProductStoreModule1: 
+        exposedModule: "./OneCXProductStoreModule1"
+        description: "OneCX Product Store UI 1"
+      OneCXProductStoreModule2:
+        exposedModule: "./OneCXProductStoreModule2"
+        description: "OneCX Product Store UI 2"
+    spec:
+      note: "OneCX Product Store UI module auto import via MF operator"

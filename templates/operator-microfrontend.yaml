@@ -1,32 +1,37 @@
 {{ if .Values.operator.microfrontend.enabled }}
+{{- range $mfe_name, $mfe_spec := .Values.operator.microfrontend.specs }}
+---
 apiVersion: onecx.tkit.org/v1
 kind: Microfrontend
 metadata:
-  name: {{ include "app.fullname" . }}
+  name: {{ include "app.fullname" $ }}-{{ $mfe_name }}
   labels:
-    app: {{ include "app.fullname" . }}
+    app: {{ include "app.fullname" $ }}
 {{ include "app.labels.common" $ | indent 4 }}    
 spec:
-  appId: {{ .Values.operator.microfrontend.spec.appId | default (include "app.id" .) }} 
-  appName: {{ .Values.operator.microfrontend.spec.appName | default (include "app.fullname" .) }} 
+  appId: {{ $mfe_spec.appId | default (include "app.id" $) }} 
+  appName: {{ $mfe_spec.appName | default (include "app.fullname" $) }} 
   appVersion: {{ template "app.version" $ }}
-  classifications: {{ .Values.operator.microfrontend.spec.classifications }} 
-  contact: {{ .Values.operator.microfrontend.spec.contact }} 
-  description: {{ .Values.operator.microfrontend.spec.description }} 
-  exposedModule: {{ .Values.operator.microfrontend.spec.exposedModule }}
-  iconName: {{ .Values.operator.microfrontend.spec.iconName }}
-  note: {{ .Values.operator.microfrontend.spec.note }}
-  tagName: {{ .Values.operator.microfrontend.spec.tagName }}
-  remoteName: {{ .Values.operator.microfrontend.spec.remoteName }}
-  productName: {{ .Values.operator.microfrontend.spec.productName | default .Release.Name }}
-  remoteBaseUrl: {{ .Values.operator.microfrontend.spec.remoteBaseUrl | default .Values.routing.path }}
-  remoteEntry: {{ .Values.operator.microfrontend.spec.remoteBaseUrl | default .Values.routing.path }}{{ .Values.operator.microfrontend.entrySuffix }}
-  technology: {{ .Values.operator.microfrontend.spec.technology }}
-  {{ if (.Values.operator.microfrontend.spec.endpoints) }}  
+  classifications: {{ $mfe_spec.classifications | default $.Values.operator.microfrontend.spec.classifications }} 
+  contact: {{ $mfe_spec.contact | default $.Values.operator.microfrontend.spec.contact }} 
+  description: {{ $mfe_spec.description | default $.Values.operator.microfrontend.spec.description }} 
+  exposedModule: {{ $mfe_spec.exposedModule }}
+  iconName: {{ $mfe_spec.iconName | default $.Values.operator.microfrontend.spec.iconName }}
+  note: {{ $mfe_spec.note | default $.Values.operator.microfrontend.spec.note }}
+  tagName: {{ $mfe_spec.tagName | default $.Values.operator.microfrontend.spec.tagName }}
+  remoteName: {{ $mfe_spec.remoteName }}  
+  productName: {{ $mfe_spec.productName | default (include "app.product.name" $) }}
+  remoteBaseUrl: {{ $mfe_spec.remoteBaseUrl | default $.Values.routing.path }}
+  remoteEntry: {{ $mfe_spec.remoteBaseUrl | default $.Values.routing.path }}{{ $.Values.operator.microfrontend.entrySuffix }}
+  technology: {{ $mfe_spec.technology | default $.Values.operator.microfrontend.spec.technology }}
+  type: {{ $mfe_spec.type | default $.Values.operator.microfrontend.spec.type }}
+  deprecated: {{ $mfe_spec.deprecated | default $.Values.operator.microfrontend.spec.deprecated }}
+  {{ if ($mfe_spec.endpoints) }}  
   endpoints:
-  {{- range $item := .Values.operator.microfrontend.spec.endpoints }}
+  {{- range $item := $mfe_spec.endpoints }}
     - name: {{ $item.name }}
       path: {{ $item.path }}
   {{- end }}
   {{- end }}
-{{- end }}
+{{- end }} 
+{{- end }} 

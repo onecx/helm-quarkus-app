@@ -1,6 +1,5 @@
 {{- define "app.fullname" -}}
-    {{- $product := .Values.product | default true -}}
-    {{- if $product -}}
+    {{- if or .Values.product (not (hasKey .Values "product")) -}}
         {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
     {{- else -}}
         {{ .Release.Name }}

@@ -1,5 +1,10 @@
 {{- define "app.fullname" -}}
-    {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
+    {{- $product := .Values.product | default true -}}
+    {{- if $product -}}
+        {{ .Release.Name }}-{{ .Values.name | default .Chart.Name }}
+    {{- else -}}
+        {{ .Release.Name }}
+    {{- end -}}
 {{- end -}}
 
 {{- define "app.product.name" -}}

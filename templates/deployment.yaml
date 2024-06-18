@@ -2,6 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "app.fullname" . }}
+  annotations:
+  {{- if .Values.operator.reloader.enabled }}
+  {{- if .Values.operator.reloader.auto }}
+    reloader.stakater.com/auto: "true"
+  {{- end }}
+  {{- end }}
   labels:
     app: {{ include "app.fullname" . }}
 {{ include "app.labels.common" $ | indent 4 }}

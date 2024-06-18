@@ -240,6 +240,19 @@ oidc:
 
 # Kubernetes operator configuration
 operator:
+
+  # secret-generator oprator
+  secretgenerator:
+    # enabled or disable secret-generator annotation 
+    enabled: false
+
+  # reloader operator for configmap and secrets
+  reloader:
+    # enabled or disable reloader annotation 
+    enabled: true
+    # enabled or disable auto reloader (all deployment references)
+    auto: true
+
   # product store microservice
   microservice:
     # enable or disable configuration for operator
@@ -347,7 +360,7 @@ operator:
       remoteEntry:
 
       # default release name (product name)
-      productName:      
+      productName:
       
       # default deployment name (release_name-name or appId)
       appId:
@@ -363,6 +376,13 @@ operator:
       enabled: false
       # Set password for secret of default name of app
       password:
+      # secret configuration
+      secret:
+        # secret generator configuration
+        generator:
+          # enabled or disable secret generator annotation for kc client resource
+          enabled: true
+
       # definition
       spec:
         # keycloak realm where the client has to be created

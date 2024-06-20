@@ -244,7 +244,7 @@ operator:
   # secret-generator oprator
   secretgenerator:
     # enabled or disable secret-generator annotation 
-    enabled: false
+    enabled: true
 
   # reloader operator for configmap and secrets
   reloader:

@@ -382,6 +382,8 @@ operator:
         generator:
           # enabled or disable secret generator annotation for kc client resource
           enabled: true
+          # secret generator encoding base64 | base64url | base32 | hex
+          encoding: base64url
 
       # definition
       spec:

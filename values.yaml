@@ -185,6 +185,31 @@ serviceAccountSuffix:
 # Inject config maps
 inject_maps: []
 
+# service metrics configuration
+metrics:
+  # enable or disable metrics
+  enabled: false
+  # service metrics path
+  path: /q/metrics
+  # metrics prometheus configuration
+  prometheus:
+    # enable or disable prometheus configuration
+    enabled: true
+    # prometheus metrics default metrics.path
+    path:
+    # scrape prometheus metrics
+    scrape: true
+    # prometheus metrics pod port, default pod.port
+    pod:
+    # promehtues health metrics
+    health:
+      # enable or disable prometheus helth metrics
+      enabled: true
+      # service health path for prometheus default livenessProbe.url
+      path:
+      # service health port for prometheus default pod.port
+      port:
+
 # Database configuration
 db:
   # Enable or disable database connection

@@ -34,6 +34,18 @@ spec:
 {{- if .Values.env_secrets }}
         checksum/{{ template "app.fullname" $ }}-env: {{ include (print $.Template.BasePath "/secret-env.yaml") . | sha256sum }}
 {{- end }}
+{{- if .Values.metrics.enabled  }}
+{{- if .Values.metrics.prometheus.enabled }}
+        prometheus.io/scrape: '{{ .Values.metrics.prometheus.scrape }}'
+        prometheus.io/path: '{{ .Values.metrics.prometheus.path  | default .Values.metrics.path }}'
+        prometheus.io/port: '{{ .Values.metrics.prometheus.pod | default .Values.pod.port }}'
+        {{- if .Values.metrics.prometheus.health.enabled }}
+        prometheus.io/health: '{{  .Values.metrics.prometheus.health.enabled }}'
+        prometheus.io/health_path: '{{ .Values.metrics.prometheus.health.path |  default .Values.livenessProbe.url }}'
+        prometheus.io/health_port: '{{ .Values.metrics.prometheus.health.port  | default .Values.pod.port }}'
+        {{- end }}
+{{- end }}
+{{- end }}
     spec:
       {{- if .Values.serviceAccount.enabled }}
         {{- if .Values.serviceAccount.name }}

@@ -1,0 +1,6 @@
+name: svc
+global:
+  db:
+    databasePrefix: customprefix
+db:
+  enabled: true

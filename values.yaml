@@ -11,6 +11,7 @@ global:
   db:
     port:
     host:
+    databasePrefix:
 
   # node selector for the pods
   nodeSelector:

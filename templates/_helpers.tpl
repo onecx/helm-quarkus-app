@@ -70,6 +70,8 @@
 {{- define "app.db.database" -}}
     {{- if .Values.db.database -}}
       {{- .Values.db.database -}}
+    {{- else if .Values.global.db.databasePrefix -}}
+        {{.Values.global.db.databasePrefix}}_{{ include "app.fullname" $ | replace "-" "_" }}
     {{- else -}}
         {{ include "app.fullname" $ | replace "-" "_" }}
     {{- end -}}

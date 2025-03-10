@@ -94,7 +94,7 @@ spec:
         - containerPort: {{ .Values.pod.port }}
         readinessProbe:
           httpGet:
-            path: {{ .Values.livenessProbe.url }}
+            path: {{ .Values.readinessProbe.url }}
             port: {{ .Values.pod.port }}
             scheme: HTTP
           initialDelaySeconds: 5
@@ -104,7 +104,7 @@ spec:
           failureThreshold: 5
         livenessProbe:
           httpGet:
-            path: {{ .Values.readinessProbe.url }}
+            path: {{ .Values.livenessProbe.url }}
             port: {{ .Values.pod.port }}
             scheme: HTTP
           initialDelaySeconds: 5

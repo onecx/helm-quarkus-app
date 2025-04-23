@@ -296,6 +296,27 @@ operator:
       # .Values.name or this type
       type:
 
+  # parameters
+  parameter:
+    # enable or disable configuration for operator
+    enabed: false
+    # definnition and default values for the list of parameters
+    spec:
+      # operator key
+      key: onecx
+      # default release name (product name)
+      productName:
+      # default deployment name (release_name-name)
+      appId:
+      # map of parameters
+      # parameters:
+      #   orgId:
+      #     name:
+      #       displayName:
+      #       description:
+      #       value: bool | number | string | object
+      parameters:
+
   # permissions
   permission:
     # enable or disable configuration for operator
@@ -366,7 +387,7 @@ operator:
       tagName:
 
       # list of strings
-      classifications: []      
+      classifications: []
 
       # list of name and path
       endpoints:

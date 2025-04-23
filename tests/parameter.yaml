@@ -1,0 +1,33 @@
+operator:
+  parameter:
+    enabled: true
+    spec:
+      parameters:
+        default:
+          param1:
+            displayName:
+            description:
+            value: true
+          param2:
+            displayName:
+            description:
+            value: 100
+          param3:
+            displayName:
+            description:
+            value: "text"
+          param4:
+            displayName:
+            description:
+            value: 
+              custom: 123
+              a: true
+              c: text
+              d: 
+                f: false
+                e: 100
+        onecx:
+          param1:
+            displayName:
+            description:
+            value: text text

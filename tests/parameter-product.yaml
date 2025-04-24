@@ -3,7 +3,7 @@ operator:
     enabled: true
     spec:
       productName: my-product
-      appId: my-app
+      applicationId: my-app
       parameters:
         default:
           param1:

@@ -166,3 +166,15 @@ app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
 app.kubernetes.io/name: {{ template "app.fullname" $ }}
 {{- end -}}
 
+
+{{/*
+Determine if the image tag indicates a native Quarkus build.
+Returns "true" if the tag contains "-native", otherwise "false".
+*/}}
+{{- define "isNativeImage" -}}
+  {{- if contains "-native" .Values.image.tag -}}
+    true
+  {{- else -}}
+    false
+  {{- end -}}
+{{- end }}

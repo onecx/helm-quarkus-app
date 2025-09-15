@@ -106,6 +106,29 @@ readinessProbe:
 startupProbe:
   url: /q/health/started
 
+# Define the resources for main container.
+# If not defined on the microservice level jvmResources or nativeResources will be taken
+resources:
+  {}
+
+# Define the default resources for jvm images.
+jvmResources:
+  requests:
+    cpu: 100m
+    memory: 300Mi
+  limits:
+    cpu: 200m
+    memory: 600Mi
+
+# Define the default resources for native images.
+nativeResources:
+  requests:
+    cpu: 100m
+    memory: 100Mi
+  limits:
+    cpu: 200m
+    memory: 200Mi
+
 # Template env variable for Quarkus application
 template:
   db_property_url: "_PROD_QUARKUS_DATASOURCE_JDBC_URL"

@@ -117,8 +117,8 @@ jvmResources:
     cpu: 50m
     memory: 300Mi
   limits:
-    cpu: 400m
-    memory: 1000Mi
+    cpu: 1000m
+    memory: 600Mi
 
 # Define the default resources for native images.
 nativeResources:
@@ -126,8 +126,8 @@ nativeResources:
     cpu: 50m
     memory: 100Mi
   limits:
-    cpu: 400m
-    memory: 1000Mi
+    cpu: 1000m
+    memory: 200Mi
 
 # Template env variable for Quarkus application
 template:

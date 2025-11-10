@@ -272,7 +272,7 @@ db:
       # Docker repository (application name)
       repository: "onecx/onecx-db-check"
       # Docker image tag (application version)
-      tag: "0.1.0"
+      tag: "1.1.0"
       # pull policy Always | IfNotPresent | Never
       pull: IfNotPresent
       # tag suffix for example native

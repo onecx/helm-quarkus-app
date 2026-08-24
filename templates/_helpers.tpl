@@ -175,8 +175,8 @@ Returns "true" if:
 */}}
 {{- define "isNativeImage" -}}
   {{- if or
-        (contains "-native" .Values.image.tag)
-        (contains "native" .Values.image.suffix)
+        (contains "-native" (default "" .Values.image.tag | toString))
+        (contains "native" (default "" .Values.image.suffix | toString))
   -}}
     true
   {{- else -}}
